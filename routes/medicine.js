@@ -6,5 +6,5 @@ router.route("/").get(medicineController.getAllMedicines);
 
 router.route("/:id").delete(medicineController.deleteMedicine);
 router.route("/:id").get(medicineController.getMedicine);
-router.route("/id").post(medicineController.createNewMedicine);
+router.route("/").post(medicineController.createNewMedicine);
 module.exports = router;

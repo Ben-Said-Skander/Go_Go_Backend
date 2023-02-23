@@ -5,7 +5,7 @@ const getAllMedicines = async (req, res) => {
   if (!medicines)
     return res.status(204).json({ message: "No Medicines found" });
   res.json(medicines);
-  // console.log(medicines);
+  console.log(medicines);
 };
 const getMedicine = async (req, res) => {
   if (!req?.params?.id)
@@ -17,7 +17,7 @@ const getMedicine = async (req, res) => {
       .json({ message: `Medicine ID ${req.params.id} not found` });
   }
   res.json(medicine);
-  //   console.log(medicine);
+  console.log(medicine);
 };
 const createNewMedicine = async (req, res) => {
   if (
@@ -40,6 +40,7 @@ const createNewMedicine = async (req, res) => {
     });
 
     res.status(201).json(result);
+    console.log(result);
   } catch (err) {
     console.error(err);
   }

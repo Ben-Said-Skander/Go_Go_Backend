@@ -33,9 +33,62 @@ const getUser = async (req, res) => {
   res.json(user);
   console.log(user);
 };
+const updateName = async (req, res) => {
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const user = await User.findOne({ _id: req.body.id }).exec();
+  if (!user) {
+    return res
+      .status(204)
+      .json({ message: `No User matches ID ${req.body.id}.` });
+  }
+  if (req.body?.fullname) user.fullname = req.body.fullname;
+
+  const result = await user.save();
+  res.json(result);
+};
+const updateEmail = async (req, res) => {
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const user = await User.findOne({ _id: req.body.id }).exec();
+  if (!user) {
+    return res
+      .status(204)
+      .json({ message: `No User matches ID ${req.body.id}.` });
+  }
+
+  if (req.body?.email) user.email = req.body.email;
+
+  const result = await user.save();
+  res.json(result);
+};
+const updatePhone = async (req, res) => {
+  if (!req?.params?.id) {
+    return res.status(400).json({ message: "ID parameter is required." });
+  }
+
+  const user = await User.findOne({ _id: req.body.id }).exec();
+  if (!user) {
+    return res
+      .status(204)
+      .json({ message: `No User matches ID ${req.body.id}.` });
+  }
+
+  if (req.body?.phone_number) user.phone_number = req.body.phone_number;
+
+  const result = await user.save();
+  res.json(result);
+};
 
 module.exports = {
   getAllUsers,
-  deleteUser,
   getUser,
+  deleteUser,
+  updateName,
+  updateEmail,
+  updatePhone,
 };

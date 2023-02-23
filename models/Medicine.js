@@ -7,7 +7,7 @@ const medicineSchema = new Schema({
     required: true,
   },
   dosage: {
-    type: int,
+    type: String,
     required: true,
   },
   type: {
@@ -24,3 +24,4 @@ const medicineSchema = new Schema({
   },
 });
 module.exports = mongoose.model("Medicine", medicineSchema);
+//Mrp2M6iKuNEyCcmU
