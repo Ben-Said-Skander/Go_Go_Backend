@@ -6,6 +6,7 @@ const app = express();
 const { logger } = require("./middleware/logEvents");
 //const verifyJWT = require("./middleware/verifyJWT");
 //const cookieParser = require("cookie-parser");
+const uploadFiles = require("./middleware/uploadFiles");
 //const credentials = require("./middleware/credentials");
 const mongoose = require("mongoose");
 const connectDB = require("./config/dbConn");
@@ -33,6 +34,7 @@ app.use(express.json());
 //middleware for cookies
 //app.use(cookieParser());
 //app.use(verifyJWT);
+app.use(uploadFiles);
 // routes
 app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/auth"));
@@ -43,6 +45,7 @@ app.use("/blog", require("./routes/blog"));
 app.use("/user", require("./routes/user"));
 app.use("/medicines", require("./routes/medicine"));
 app.use("/pharmacies", require("./routes/pharmacy"));
+app.use("/image", require("./routes/upload"));
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, hostname, () =>
