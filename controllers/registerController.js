@@ -2,8 +2,8 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 const handleNewUser = async (req, res) => {
-  const { fullname, password, email, phone_number } = req.body;
-  if (!fullname || !password || !email || !phone_number)
+  const { fullname, email, password, phoneNumber } = req.body;
+  if (!fullname || !password || !email || !phoneNumber)
     return res.status(400).json({
       message: "Username , Email ,Phone Number and password are required.",
     });
@@ -21,14 +21,16 @@ const handleNewUser = async (req, res) => {
       fullname: fullname,
       password: hashedPwd,
       email: email,
-      phone_number: phone_number,
+      phoneNumber: phoneNumber,
     });
 
     console.log(result);
-
+    console.log("Response status code:", res.statusCode);
     res.status(201).json({ success: `New user ${fullname} created!` });
+    console.log(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
+    console.log("shiiiiiit");
   }
 };
 

@@ -31,6 +31,7 @@ const createNewBlog = async (req, res) => {
     });
 
     res.status(201).json(result);
+    console.log(result);
   } catch (err) {
     console.error(err);
   }

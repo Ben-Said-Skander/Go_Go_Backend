@@ -7,7 +7,18 @@ const getAllPharmacies = async (req, res) => {
   res.json(pharmacies);
   console.log(pharmacies);
 };
-
+const getPharmacy = async (req, res) => {
+  if (!req?.params?.id)
+    return res.status(400).json({ message: "Pharmacy ID required" });
+  const pharmacy = await Pharmacy.findOne({ _id: req.params.id }).exec();
+  if (!pharmacy) {
+    return res
+      .status(204)
+      .json({ message: `Pharmacy ID ${req.params.id} not found` });
+  }
+  res.json(pharmacy);
+  console.log(pharmacy);
+};
 const createNewPharmacy = async (req, res) => {
   if (
     !req?.body?.name ||
@@ -48,6 +59,7 @@ const deletePharmacy = async (req, res) => {
 
 module.exports = {
   getAllPharmacies,
+  getPharmacy,
   createNewPharmacy,
   deletePharmacy,
 };
