@@ -16,7 +16,7 @@ const pharmacySchema = new Schema({
   },
   drugs: {
     type: Map,
-    of: bool,
+    of: Boolean,
     required: true,
   },
 });

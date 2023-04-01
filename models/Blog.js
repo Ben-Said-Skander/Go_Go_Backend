@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const blogSchema = new Schema({
+  id: {
+    type: String,
+    required: false,
+  },
   title: {
     type: String,
     required: true,
@@ -11,7 +15,7 @@ const blogSchema = new Schema({
     required: true,
   },
   body: {
-    type: String ,
+    type: String,
     required: true,
   },
 });

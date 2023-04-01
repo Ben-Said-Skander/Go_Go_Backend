@@ -2,12 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const medicineSchema = new Schema({
+  id: {
+    type: String,
+    required: false,
+  },
   name: {
     type: String,
     required: true,
   },
   dosage: {
-    type: String,
+    type: Number,
     required: true,
   },
   type: {

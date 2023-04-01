@@ -1,17 +1,22 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+var multer = require("multer");
+const upload = multer();
 //const cors = require("cors");
 //const corsOptions = require("./config/corsOptions");
 const { logger } = require("./middleware/logEvents");
 //const verifyJWT = require("./middleware/verifyJWT");
 //const cookieParser = require("cookie-parser");
-const uploadFiles = require("./middleware/uploadFiles");
 //const credentials = require("./middleware/credentials");
+
+const uploadImage = require("./middleware/uploadImage");
+const Image = require("./models/Image");
+
 const mongoose = require("mongoose");
 const connectDB = require("./config/dbConn");
 const PORT = process.env.PORT || 3600;
-const hostname = "192.168.101.161";
+const hostname = "192.168.1.14";
 
 // Connect to MongoDB
 connectDB();
@@ -34,7 +39,7 @@ app.use(express.json());
 //middleware for cookies
 //app.use(cookieParser());
 //app.use(verifyJWT);
-app.use(uploadFiles);
+
 // routes
 app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/auth"));
@@ -45,7 +50,23 @@ app.use("/blog", require("./routes/blog"));
 app.use("/user", require("./routes/user"));
 app.use("/medicines", require("./routes/medicine"));
 app.use("/pharmacies", require("./routes/pharmacy"));
-app.use("/image", require("./routes/upload"));
+// Get the image
+app.use("/image", require("./routes/image"));
+
+/*
+app.get("/images", async (req, res) => {
+  try {
+    const images = await Image.find();
+    res.send(images);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+*/
+//Post an image
+app.post("/images", upload.single("image"), uploadImage);
+
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, hostname, () =>

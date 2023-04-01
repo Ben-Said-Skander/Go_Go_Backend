@@ -11,7 +11,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  phone_number: {
+  phoneNumber: {
     type: Number,
     required: true,
   },
@@ -20,13 +20,6 @@ const userSchema = new Schema({
     required: true,
   },
 
-  roles: {
-    User: {
-      type: Number,
-      default: 5150,
-    },
-    Editor: Number,
-    Admin: Number,
-  },
+
 });
 module.exports = mongoose.model("User", userSchema);
