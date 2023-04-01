@@ -18,29 +18,23 @@ const getPicture = async (req, res) => {
   });
 };
 
-async function getAllImages(req, res) {
+const getAllImages = async (req, res) => {
   try {
+    // Find all images in the GridFS bucket
     const images = await Image.find();
-    const Image = await Promise.all(images.map(async (image) => {
-      const stream = bucket.openDownloadStream(mongoose.Types.ObjectId(image.gridFSId));
-      const buffer = await new Promise((resolve, reject) => {
-        let chunks = [];
-        stream.on('data', (chunk) => chunks.push(chunk));
-        stream.on('error', (err) => reject(err));
-        stream.on('end', () => resolve(Buffer.concat(chunks)));
-      });
-      return {
-        id: image.id,
-        contentType: image.contentType,
-        data: buffer.toString('base64')
-      };
+    // Map the images to a new array with only the necessary data
+    const imageData = images.map((image) => ({
+      id: image._id,
+      contentType: image.contentType,
+      data: image.data.toString("base64"),
     }));
-    res.json(imageModels);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
+    // Send the imageData as the response
+    res.send(imageData);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
-}
+};
 
 //********************************** */
 const uploadImage = (req, res) => {
