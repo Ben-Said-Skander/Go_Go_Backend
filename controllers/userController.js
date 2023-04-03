@@ -1,5 +1,5 @@
 const User = require("../models/User");
-
+const bcrypt = require("bcrypt");
 const getAllUsers = async (req, res) => {
   const users = await User.find();
   if (!users) return res.status(204).json({ message: "No users found" });
@@ -34,54 +34,109 @@ const getUser = async (req, res) => {
   console.log(user);
 };
 const updateName = async (req, res) => {
-  if (!req?.params?.id) {
-    return res.status(400).json({ message: "ID parameter is required." });
-  }
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "ID parameter is required." });
+    }
 
-  const user = await User.findOne({ _id: req.body.id }).exec();
-  if (!user) {
-    return res
-      .status(204)
-      .json({ message: `No User matches ID ${req.body.id}.` });
+    const user = await User.findOne({ _id: req.params?.id }).exec();
+    if (!user) {
+      return res
+        .status(204)
+        .json({ message: `No User matches ID ${req.body.id}.` });
+    }
+    if (req.body?.fullname) {
+      user.fullname = req.body.fullname;
+      const result = await user.save();
+      res.json(result);
+      res.status(200).json({ message: `Name changed with sucess.` });
+    } else {
+      res.status(404).json({ message: `Name Required ${req.body.id}.` });
+    }
+  } catch (error) {
+    console.log(error);
   }
-  if (req.body?.fullname) user.fullname = req.body.fullname;
-
-  const result = await user.save();
-  res.json(result);
 };
 const updateEmail = async (req, res) => {
-  if (!req?.params?.id) {
-    return res.status(400).json({ message: "ID parameter is required." });
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "ID parameter is required." });
+    }
+
+    const user = await User.findOne({ _id: req.params?.id }).exec();
+    if (!user) {
+      return res
+        .status(204)
+        .json({ message: `No User matches ID ${req.body.id}.` });
+    }
+
+    if (req.body?.email) {
+      user.email = req.body.email;
+
+      const result = await user.save();
+      res.json(result);
+      res.status(200).json({ message: `Email changed with sucess.` });
+    } else {
+      res.status(404).json({ message: `Email Required ${req.body.id}.` });
+    }
+  } catch (error) {
+    console.log(error);
   }
-
-  const user = await User.findOne({ _id: req.body.id }).exec();
-  if (!user) {
-    return res
-      .status(204)
-      .json({ message: `No User matches ID ${req.body.id}.` });
-  }
-
-  if (req.body?.email) user.email = req.body.email;
-
-  const result = await user.save();
-  res.json(result);
 };
 const updatePhone = async (req, res) => {
-  if (!req?.params?.id) {
-    return res.status(400).json({ message: "ID parameter is required." });
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "ID parameter is required." });
+    }
+
+    const user = await User.findOne({ _id: req.params?.id }).exec();
+    if (!user) {
+      return res
+        .status(204)
+        .json({ message: `No User matches ID ${req.body.id}.` });
+    }
+
+    if (req.body?.phoneNumber) {
+      user.phoneNumber = req.body.phoneNumber;
+
+      const result = await user.save();
+      res.json(result);
+      res.status(200).json({ message: `Phone Number changed with sucess.` });
+    } else {
+      res
+        .status(404)
+        .json({ message: `Phone Number Required ${req.body.id}.` });
+    }
+  } catch (error) {
+    console.log(error);
   }
+};
 
-  const user = await User.findOne({ _id: req.body.id }).exec();
-  if (!user) {
-    return res
-      .status(204)
-      .json({ message: `No User matches ID ${req.body.id}.` });
+const updatePassword = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "ID parameter is required." });
+    }
+    const user = await User.findOne({ _id: req.params?.id }).exec();
+    if (!user) {
+      return res
+        .status(204)
+        .json({ message: `No User matches ID ${req.body.id}.` });
+    }
+    if (req.body?.password) {
+      const hashedPwd = await bcrypt.hash(req.body.password, 10);
+      user.password = hashedPwd;
+      const result = await user.save();
+      res.json(result);
+      res.status(200).json({ message: `Password changed with sucess.` });
+    } else {
+      res
+        .status(404)
+        .json({ message: `New Password Required ${req.body.id}.` });
+    }
+  } catch (error) {
+    console.log(error);
   }
-
-  if (req.body?.phone_number) user.phone_number = req.body.phone_number;
-
-  const result = await user.save();
-  res.json(result);
 };
 
 module.exports = {
@@ -91,4 +146,5 @@ module.exports = {
   updateName,
   updateEmail,
   updatePhone,
+  updatePassword,
 };

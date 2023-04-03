@@ -8,9 +8,10 @@ router.route("/").get(userController.getAllUsers);
 
 router.route("/:id").delete(userController.deleteUser);
 router.route("/:id").get(userController.getUser);
-router.route("/updateName/:id").patch(userController.updateName);
-router.route("/updateEmail/:id").patch(userController.updateEmail);
-router.route("/updatePhone/:id").patch(userController.updatePhone);
+router.route("/updateName/:id").put(userController.updateName);
+router.route("/updateEmail/:id").put(userController.updateEmail);
+router.route("/updatePhone/:id").put(userController.updatePhone);
+router.route("/updatePassword/:id").put(userController.updatePassword);
 module.exports = router;
 /*
 La méthode PATCH d'une requête HTTP applique des modifications partielles à une ressource. La méthode HTTP PUT est déjà définie

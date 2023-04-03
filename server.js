@@ -16,7 +16,7 @@ const Image = require("./models/Image");
 const mongoose = require("mongoose");
 const connectDB = require("./config/dbConn");
 const PORT = process.env.PORT || 3600;
-const hostname = "192.168.1.14";
+const hostname = "192.168.245.161";
 
 // Connect to MongoDB
 connectDB();
@@ -50,20 +50,10 @@ app.use("/blog", require("./routes/blog"));
 app.use("/user", require("./routes/user"));
 app.use("/medicines", require("./routes/medicine"));
 app.use("/pharmacies", require("./routes/pharmacy"));
+app.use("/user/forgotPassword", require("./routes/resetPassword"));
 // Get the image
 app.use("/image", require("./routes/image"));
 
-/*
-app.get("/images", async (req, res) => {
-  try {
-    const images = await Image.find();
-    res.send(images);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server error");
-  }
-});
-*/
 //Post an image
 app.post("/images", upload.single("image"), uploadImage);
 
