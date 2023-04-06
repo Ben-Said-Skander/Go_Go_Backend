@@ -14,6 +14,12 @@ const blogSchema = new Schema({
     type: String,
     required: true,
   },
+  
+  imageId: {
+    type: Schema.Types.ObjectId,
+    ref: "Image",
+  
+  },
 });
 
 module.exports = mongoose.model("Blog", blogSchema);

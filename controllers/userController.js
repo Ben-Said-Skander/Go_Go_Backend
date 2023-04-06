@@ -30,7 +30,9 @@ const getUser = async (req, res) => {
       .status(204)
       .json({ message: `User ID ${req.params.id} not found` });
   }
+
   res.json(user);
+
   console.log(user);
 };
 const updateName = async (req, res) => {
