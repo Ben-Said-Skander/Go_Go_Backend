@@ -1,15 +1,19 @@
 const jwt = require("jsonwebtoken");
 
-const verifyJWt = (req, res, next) => {
-  const authHeader = req.headers.authorziation || req.headers.Authorziation;
-  if (!authHeader?.startsWith("Bearer")) return res.sendStatus(401); //didn't send a token with the req
-  const token = authHeader.split("")[1];
+const verifyJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401);
+  const token = authHeader.split(" ")[1];
   console.log(token);
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.sendStatus(403); //invalid token
-    req.user = decoded.UserInfo.username;
+    //Store the user id in the object req if the token is correct
+    req.email = decoded.UserInfo.email;
+    req.userId = decoded.UserInfo.userId;
+    print("Aceess token is correct");
+
     next();
   });
 };
 
-module.exports = verifyJWt;
+module.exports = verifyJWT;

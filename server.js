@@ -5,8 +5,8 @@ var multer = require("multer");
 //const cors = require("cors");
 //const corsOptions = require("./config/corsOptions");
 const { logger } = require("./middleware/logEvents");
-//const verifyJWT = require("./middleware/verifyJWT");
-//const cookieParser = require("cookie-parser");
+const verifyJWT = require("./middleware/verifyJWT");
+const cookieParser = require("cookie-parser");
 //const credentials = require("./middleware/credentials");
 const Image = require("./models/Image");
 const Blog = require("./models/Blog");
@@ -16,7 +16,7 @@ const mongoose = require("mongoose");
 const connectDB = require("./config/dbConn");
 
 const PORT = process.env.PORT || 3600;
-const hostname = "192.168.172.161";
+const hostname = "192.168.1.15";
 
 // Connect to MongoDB
 connectDB();
@@ -37,14 +37,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //middleware for cookies
-//app.use(cookieParser());
-//app.use(verifyJWT);
-
+app.use(cookieParser());
 
 // routes
 app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/auth"));
-//app.use("/refresh", require("./routes/refresh"));
+app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
 app.use("/blog", require("./routes/blog"));
 app.use("/user", require("./routes/user"));
@@ -87,7 +85,8 @@ const createNewBlogWithImage = async (req, res) => {
 };
 
 app.post("/images", upload.single("image"), createNewBlogWithImage);
-
+//middleware to verify jwt when sending req
+app.use(verifyJWT);
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, hostname, () =>

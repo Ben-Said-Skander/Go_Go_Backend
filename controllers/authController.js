@@ -21,6 +21,8 @@ const handleLogin = async (req, res) => {
     res.sendStatus(401);
   }
 };
+
+
 // Login with JWT
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -34,39 +36,37 @@ const login = async (req, res) => {
   // evaluate password
   const match = await bcrypt.compare(password, foundUser.password);
   if (match) {
-
     // create JWTs
     const accessToken = jwt.sign(
       {
         UserInfo: {
-          fullname: foundUser.fullname,
-       
+          email: foundUser.email,
+          userId: foundUser._id,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "10s" }
     );
     const refreshToken = jwt.sign(
-      { fullname: foundUser.fullname },
+      { email: foundUser.email },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "7d" }
     );
     // Saving refreshToken with current user
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
     console.log(result);
 
-
     // Creates Secure Cookie with refresh token
     res.cookie("jwt", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      //httpOnly: true,
+      //secure: false,
+      //sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    // Send authorization roles and access token to user
-    res.json({ accessToken });
+    // Send authorization  access token to user
+    res.json({ accessToken, userId: foundUser._id  });
   } else {
     res.sendStatus(401);
   }
