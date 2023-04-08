@@ -41,11 +41,11 @@ const login = async (req, res) => {
       {
         UserInfo: {
           email: foundUser.email,
-          userId: foundUser._id,
+     
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "10s" }
+      { expiresIn: "5d" }
     );
     const refreshToken = jwt.sign(
       { email: foundUser.email },
@@ -65,10 +65,14 @@ const login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    // Send authorization  access token to user
-    res.json({ accessToken, userId: foundUser._id  });
+    // Set the access token as a response header
+    res.setHeader('Authorization', `Bearer ${accessToken}`);
+
+    // Send authorization access token to user
+    res.json({ userId: foundUser._id });
   } else {
     res.sendStatus(401);
   }
 };
+
 module.exports = { handleLogin, login };

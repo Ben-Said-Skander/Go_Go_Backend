@@ -28,8 +28,10 @@ const getAllImages = async (req, res) => {
       contentType: image.contentType,
       data: image.data.toString("base64"),
     }));
+    console.log(imageData)
     // Send the imageData as the response
     res.send(imageData);
+    
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

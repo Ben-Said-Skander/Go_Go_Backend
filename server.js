@@ -53,8 +53,14 @@ app.use("/user/forgotPassword", require("./routes/resetPassword"));
 app.use("/image", require("./routes/image"));
 
 //Post an image
-const createNewBlogWithImage = async (req, res) => {
-  if (!req?.body?.title || !req?.body?.category || !req?.body?.body) {
+const createNewBlogWithImage = async (req, res, userId) => {
+  if (
+    !req?.body?.title ||
+    !req?.body?.category ||
+    !req?.body?.body ||
+    !req?.body?.userId ||
+    !req?.file
+  ) {
     return res.status(400).json({ message: "Fields are empty" });
   }
 
@@ -69,22 +75,29 @@ const createNewBlogWithImage = async (req, res) => {
       title: req.body.title,
       category: req.body.category,
       body: req.body.body,
-      imageId: image._id, // set the reference to the image id
-    });
+      userId: req.body.userId, // Add userId to the new blog
+      imageId: image._id,
 
-    if (!result) {
-      return res.status(500).json({ message: "Failed to create blog" });
-    }
+    });
 
     res.status(201).json(result);
     console.log(result);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Failed to create blog" });
   }
 };
 
-app.post("/images", upload.single("image"), createNewBlogWithImage);
+
+app.post("/images",  upload.single("image"), async (req, res) => {
+  try {
+    //const userId = req.userId; // Get userId from the request object
+
+    // Call the controller with the userId parameter
+    await createNewBlogWithImage(req, res);
+  } catch (err) {
+    console.error(err);
+  }
+});
 //middleware to verify jwt when sending req
 app.use(verifyJWT);
 mongoose.connection.once("open", () => {
