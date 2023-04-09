@@ -9,7 +9,7 @@ const verifyJWT = (req, res, next) => {
     if (err) return res.sendStatus(403); //invalid token
     //Store the user id in the object req if the token is correct
     req.email = decoded.UserInfo.email;
-    req.userId = decoded.UserInfo.userId;
+
     print("Aceess token is correct");
 
     next();

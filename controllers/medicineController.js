@@ -25,7 +25,8 @@ const createNewMedicine = async (req, res) => {
     !req?.body?.dosage ||
     !req?.body?.type ||
     !req?.body?.interval ||
-    !req?.body?.start_time
+    !req?.body?.start_time ||
+    !req?.body?.medicineId 
   ) {
     return res.status(400).json({ message: "Fields are empty" });
   }
@@ -37,6 +38,7 @@ const createNewMedicine = async (req, res) => {
       type: req.body.type,
       interval: req.body.interval,
       start_time: req.body.start_time,
+      medicineId:req.body.medicineId
     });
 
     res.status(201).json(result);

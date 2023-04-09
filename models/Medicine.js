@@ -26,6 +26,10 @@ const medicineSchema = new Schema({
     type: String,
     required: true,
   },
+  medicineId: {
+    type: String,
+    required: true,
+  },
 });
 module.exports = mongoose.model("Medicine", medicineSchema);
 //Mrp2M6iKuNEyCcmU

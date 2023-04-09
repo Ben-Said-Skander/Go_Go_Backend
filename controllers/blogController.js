@@ -51,7 +51,13 @@ const deleteBlog = async (req, res) => {
 };
 
 const createNewBlogWithImage = async (req, res) => {
-  if (!req?.body?.title || !req?.body?.category || !req?.body?.body || !req?.file) {
+  if (
+    !req?.body?.title ||
+    !req?.body?.category ||
+    !req?.body?.body ||
+    !req?.body?.userId ||
+    !req?.file
+  ) {
     return res.status(400).json({ message: "Fields are empty" });
   }
 
@@ -66,7 +72,8 @@ const createNewBlogWithImage = async (req, res) => {
       title: req.body.title,
       category: req.body.category,
       body: req.body.body,
-      image: image._id,
+      userId: req.body.userId,
+      imageId: image._id,
     });
 
     res.status(201).json(result);
