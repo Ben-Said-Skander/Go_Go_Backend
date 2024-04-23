@@ -11,10 +11,27 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+
   phoneNumber: {
     type: Number,
     required: true,
   },
+
+  carModel: {
+    type: String,
+    required: false,
+  },
+
+  isAvailable: {
+    type: String,
+    required: false,
+  },
+
+  destination: {
+    type: String,
+    required: false,
+  },
+
   password: {
     type: String,
     required: true,

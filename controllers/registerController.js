@@ -2,7 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 const handleNewUser = async (req, res) => {
-  const { fullname, email, password, phoneNumber } = req.body;
+  const { fullname, email, password, phoneNumber , carModel, isAvailable, destination} = req.body;
   if (!fullname || !password || !email || !phoneNumber)
     return res.status(400).json({
       message: "Username , Email ,Phone Number and password are required.",
@@ -22,6 +22,10 @@ const handleNewUser = async (req, res) => {
       password: hashedPwd,
       email: email,
       phoneNumber: phoneNumber,
+
+      carModel: carModel,
+      isAvailable: isAvailable,
+      destination: destination,
     });
 
     console.log(result);

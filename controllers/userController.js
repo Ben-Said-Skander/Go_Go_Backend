@@ -143,9 +143,66 @@ const updatePassword = async (req, res) => {
   }
 };
 
+const updateAvailable = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "ID parameter is required." });
+    }
+
+    const user = await User.findOne({ _id: req.params?.id }).exec();
+    if (!user) {
+      return res
+        .status(204)
+        .json({ message: `No User matches ID ${req.body.id}.` });
+    }
+
+    if (req.body?.isAvailable) {
+      user.isAvailable = req.body.isAvailable;
+
+      const result = await user.save();
+      res.json(result);
+      res.status(200).json({ message: `isAvailable changed with sucess.` });
+    } else {
+      res.status(404).json({ message: `isAvailable Required ${req.body.id}.` });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const updateCar = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({ message: "ID parameter is required." });
+    }
+
+    const user = await User.findOne({ _id: req.params?.id }).exec();
+    if (!user) {
+      return res
+        .status(204)
+        .json({ message: `No User matches ID ${req.body.id}.` });
+    }
+
+    if (req.body?.carModel) {
+      user.carModel = req.body.carModel;
+
+      const result = await user.save();
+      res.json(result);
+      res.status(200).json({ message: `carModel changed with sucess.` });
+    } else {
+      res.status(404).json({ message: `carModel Required ${req.body.id}.` });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
+  updateAvailable,
+  updateCar,
   deleteUser,
   updateName,
   updateEmail,
