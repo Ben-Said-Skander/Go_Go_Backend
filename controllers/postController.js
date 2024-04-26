@@ -8,28 +8,15 @@ const getAllPosts = async (req, res) => {
   console.log(posts);
 };
 
-const getPost = async (req, res) => {
-  if (!req?.params?.id)
-    return res.status(400).json({ message: "Post ID required" });
-  const Post = await Post.findOne({ _id: req.params.id }).exec();
-  if (!Post) {
-    return res
-      .status(204)
-      .json({ message: `Post ID ${req.params.id} not found` });
-  }
-  res.json(Post);
-  console.log(Post);
-};
-
 const createNewPost = async (req, res) => {
-  if (!req?.body?.driverName || !req?.body?.driverCar || !req?.body?.destination) {
+  if (!req?.body?.fullname || !req?.body?.carModel || !req?.body?.destination) {
     return res.status(400).json({ message: "Fields are empty" });
   }
 
   try {
     const result = await Post.create({
-      driverName: req.body.driverName,
-      driverCar: req.body.driverCar,
+      fullname: req.body.fullname,
+      carModel: req.body.carModel,
       destination: req.body.destination,
     });
 
@@ -42,9 +29,9 @@ const createNewPost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   if (!req?.params?.id)
-    return res.status(400).json({ message: "Post ID required" });
-  const Post = await Post.findOne({ _id: req.params.id }).exec();
-  if (!Post) {
+    return res.status(400).json({ message: "User ID required" });
+  const post = await Post.findOne({ _id: req.params.id }).exec();
+  if (!post) {
     return res
       .status(204)
       .json({ message: `Post ID ${req.params.id} not found` });
@@ -56,9 +43,9 @@ const deletePost = async (req, res) => {
 
 
 
+
 module.exports = {
   getAllPosts,
-  getPost,
   createNewPost,
   deletePost
 };

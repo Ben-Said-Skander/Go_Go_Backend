@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 const connectDB = require("./config/dbConn");
 
 const PORT = 3600;
-const hostname = "127.0.0.1";
+const hostname = "192.168.1.16";
 
 // Connect to MongoDB
 connectDB();
@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //middleware for cookies
-app.use(cookieParser());
+//app.use(cookieParser());
 
 // routes
 app.use("/register", require("./routes/register"));
@@ -46,7 +46,7 @@ app.use("/user", require("./routes/user"));
 app.use("/user/forgotPassword", require("./routes/resetPassword"));
 
 //middleware to verify jwt when sending req
-app.use(verifyJWT);
+//app.use(verifyJWT);
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, hostname, () =>

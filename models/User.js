@@ -36,10 +36,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  refreshToken: String
-  /*
-  verificationCode: {
-    type: String,
-  },*/
+
 });
 module.exports = mongoose.model("User", userSchema);

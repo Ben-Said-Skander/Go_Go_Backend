@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-  driverName: {
+  fullname: {
     type: String,
     required: true,
   },
-  driverCar: {
+  carModel: {
     type: String,
     required: true,
   },
@@ -14,10 +14,9 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-
   userId: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 
