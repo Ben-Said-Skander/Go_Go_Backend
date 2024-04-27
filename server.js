@@ -12,8 +12,14 @@ const Post = require("./models/Post");
 const mongoose = require("mongoose");
 const connectDB = require("./config/dbConn");
 
+
+
+/***************** CHANGE IP ADDRESS HERE **********************/
+
 const PORT = 3600;
 const hostname = "192.168.1.16";
+
+/***************** CHANGE IP ADDRESS HERE **********************/
 
 // Connect to MongoDB
 connectDB();
@@ -38,7 +44,7 @@ app.use(express.json());
 
 // routes
 app.use("/register", require("./routes/register"));
-app.use("/refresh", require("./routes/refresh"));
+app.use("/auth", require("./routes/auth"));
 app.use("/logout", require("./routes/logout"));
 app.use("/post", require("./routes/post"));
 app.use("/user", require("./routes/user"));
